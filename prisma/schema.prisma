@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+//   output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum TransactionType {
+  income
+  expense
+}
+
+enum Gender {
+    male
+    female
+}
+
+// Models
+model User {
+  id             String @id @default(uuid())
+  name           String
+  email          String
+  hashedPassword String
+  gender         Gender @default(male)
+  profilePic     String
+
+  currencyId String
+  currency   Currency @relation(fields: [currencyId], references: [id])
+
+  categories   Category[]
+  accounts     Account[]
+  transactions Transaction[]
+  tags         Tag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([email])
+}
+
+model Currency {
+  id     String @id @default(uuid())
+  name   String
+  symbol String
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([name, symbol])
+}
+
+model Account {
+  id      String @id @default(uuid())
+  name    String
+  icon    String
+  balance Float @default(0.0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([name, userId])
+}
+
+model Category {
+  id   String          @id @default(uuid())
+  name String
+  icon String
+  type TransactionType @default(income)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([name, userId, type])
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  transactions Transaction[] @relation("TransactionTags")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([name, userId])
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  description String
+  amount      Float
+  date        DateTime        @default(now())
+  type        TransactionType @default(income)
+  tags        Tag[]           @relation("TransactionTags")
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
