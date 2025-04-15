@@ -5,6 +5,7 @@ import { getUserFromDb } from "@/services/auth";
 import { Currency } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    trustHost: true,
     providers: [
         Credentials({
             credentials: {
