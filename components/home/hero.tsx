@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default async function Hero() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <section className="w-full py-12 md:py-28">
       <div className="container max-w-7xl mx-auto px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
@@ -34,10 +34,10 @@ export default async function Hero() {
           <div className="flex items-center justify-center">
             <div className="relative h-[350px] w-full md:h-[400px] lg:h-[500px]">
               <Image
-                src="/placeholder.svg?height=500&width=600"
-                alt="Budget Buddy Dashboard"
+                src="/wallet.png"
+                alt="Wallet"
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,129,0.3)]"
                 priority
               />
             </div>
