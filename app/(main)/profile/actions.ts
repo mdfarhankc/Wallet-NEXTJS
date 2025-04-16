@@ -13,7 +13,6 @@ import {
     EditProfileValues,
 } from "@/validations";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 // ------------------ Profile -------------------
 export const editProfileAction = async (values: EditProfileValues) => {
@@ -24,7 +23,7 @@ export const editProfileAction = async (values: EditProfileValues) => {
 
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     const { name, currency } = parsedBody.data;
@@ -45,7 +44,7 @@ export const editProfileAction = async (values: EditProfileValues) => {
 export const deleteProfileAction = async () => {
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
     const userId = session.user.id;
 
@@ -58,7 +57,6 @@ export const deleteProfileAction = async () => {
     ]);
 
     revalidatePath("/");
-    redirect("/sign-in");
 };
 
 // ---------- Account ------------
@@ -70,7 +68,7 @@ export const createAccountAction = async (values: CreateAccountValues) => {
 
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     const { name, icon } = parsedBody.data;
@@ -92,7 +90,7 @@ export const createAccountAction = async (values: CreateAccountValues) => {
 export const deleteAccountAction = async (accountId: string) => {
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     await prisma.account.delete({
@@ -115,7 +113,7 @@ export const createCategoryAction = async (values: CreateCategoryValues) => {
 
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     const { name, icon, type } = parsedBody.data;
@@ -138,7 +136,7 @@ export const createCategoryAction = async (values: CreateCategoryValues) => {
 export const deleteCategoryAction = async (categoryId: string) => {
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     await prisma.category.delete({
@@ -161,7 +159,7 @@ export const createTagAction = async (values: CreateTagValues) => {
 
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     const { name } = parsedBody.data;
@@ -182,7 +180,7 @@ export const createTagAction = async (values: CreateTagValues) => {
 export const deleteTagAction = async (tagId: string) => {
     const session = await auth();
     if (!session?.user) {
-        redirect("/sign-in");
+        throw new Error("User not authenticated!");
     }
 
     await prisma.tag.delete({

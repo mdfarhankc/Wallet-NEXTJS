@@ -18,12 +18,14 @@ interface DeleteDialogProps {
   onDelete: () => void;
   trigger?: ReactNode;
   title: string;
+  deleteText?: string;
 }
 
 export default function DeleteDialog({
   onDelete,
   title,
   trigger = <DeleteButton />,
+  deleteText = "Continue",
 }: DeleteDialogProps) {
   return (
     <AlertDialog>
@@ -38,7 +40,12 @@ export default function DeleteDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-700"
+            onClick={onDelete}
+          >
+            {deleteText}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
