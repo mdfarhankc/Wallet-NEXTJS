@@ -42,6 +42,25 @@ export const editProfileAction = async (values: EditProfileValues) => {
     revalidatePath("/profile");
 };
 
+export const deleteProfileAction = async () => {
+    const session = await auth();
+    if (!session?.user) {
+        redirect("/sign-in");
+    }
+    const userId = session.user.id;
+
+    await prisma.$transaction([
+        prisma.transaction.deleteMany({ where: { userId } }),
+        prisma.tag.deleteMany({ where: { userId } }),
+        prisma.category.deleteMany({ where: { userId } }),
+        prisma.account.deleteMany({ where: { userId } }),
+        prisma.user.delete({ where: { id: userId } }),
+    ]);
+
+    revalidatePath("/");
+    redirect("/sign-in");
+};
+
 // ---------- Account ------------
 export const createAccountAction = async (values: CreateAccountValues) => {
     const parsedBody = createAccountSchema.safeParse(values);

@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+
 import {
   Tooltip,
   TooltipContent,
@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/tooltip";
 import EditProfileDialog from "./EditProfileDialog";
 import { Currency, User } from "@prisma/client";
+
+import DeleteProfileDialog from "./DeleteProfileDialog";
 
 export default async function ProfileUserInfoSection({
   user,
@@ -69,7 +71,7 @@ export default async function ProfileUserInfoSection({
           </div>
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2">
             <EditProfileDialog user={user} />
-            <Button variant={"destructive"}>Delete Account</Button>
+            <DeleteProfileDialog />
           </div>
         </div>
       </div>

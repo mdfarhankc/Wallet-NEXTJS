@@ -33,15 +33,24 @@ export default function UserButton() {
         <DropdownMenuGroup>
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => router.push("/profile")}
-          >
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
             onClick={() => router.push("/dashboard")}
           >
             Dashboard
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => router.push("/transactions")}
+          >
+            Transaction
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => router.push("/profile")}
+          >
+            Profile
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

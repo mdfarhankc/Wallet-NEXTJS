@@ -36,7 +36,6 @@ export default function TagItem({ tag, index }: { tag: Tag; index: number }) {
     "bg-red-500/10 hover:bg-red-500/20 text-red-500",
     "bg-green-500/10 hover:bg-green-500/20 text-green-500",
     "bg-blue-500/10 hover:bg-blue-500/20 text-blue-500",
-    "bg-white/10 hover:bg-white/20 text-white",
     "bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500",
     "bg-purple-500/10 hover:bg-purple-500/20 text-purple-500",
     "bg-pink-500/10 hover:bg-pink-500/20 text-pink-500",
