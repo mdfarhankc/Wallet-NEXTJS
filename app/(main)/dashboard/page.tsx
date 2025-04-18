@@ -1,7 +1,13 @@
 import React from "react";
+import { Metadata } from "next";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import CreateTransactionDialog from "@/components/transactions/CreateTransactionDialog";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -16,8 +22,14 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div id="create-transaction" className="flex items-center gap-3">
-          <Button variant={"success"}>New Income</Button>
-          <Button variant={"destructive"}>New Expense</Button>
+          <CreateTransactionDialog
+            type="income"
+            trigger={<Button variant={"success"}>New Income</Button>}
+          />
+          <CreateTransactionDialog
+            type="expense"
+            trigger={<Button variant={"destructive"}>New Expense</Button>}
+          />
         </div>
       </section>
       <Separator />

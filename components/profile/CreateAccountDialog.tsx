@@ -33,8 +33,10 @@ import data from "@emoji-mart/data";
 import LoadingButton from "@/components/common/loading-button";
 import { createAccountAction } from "@/app/(main)/profile/actions";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreateAccountDialog() {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const form = useForm<CreateAccountValues>({
@@ -52,6 +54,7 @@ export default function CreateAccountDialog() {
         name: "",
         icon: "",
       });
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
       toast.success("Account created successfully.");
       setOpen((prev) => !prev);
     } catch (error) {

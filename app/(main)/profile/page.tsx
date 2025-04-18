@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { Metadata } from "next";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -12,6 +13,10 @@ import TagsSectionSkeleton from "@/components/profile/TagsSectionSkeleton";
 import TagsSection from "@/components/profile/TagsSection";
 import CategoriesSection from "@/components/profile/CategoriesSection";
 import CategoriesSectionSkeleton from "@/components/profile/CategoriesSectionSkeleton";
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 export default async function ProfilePage() {
   const session = await auth();

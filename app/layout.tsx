@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Header from "@/app/header";
 import "@/app/globals.css";
+import TanstackProvider from "@/components/tanstack/tanstack-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,25 +31,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              {children}
-            </div>
-            <Toaster richColors />
-          </ThemeProvider>
-        </SessionProvider>
-      </body>
-    </html>
+    <TanstackProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <SessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                {children}
+              </div>
+              <Toaster richColors />
+            </ThemeProvider>
+          </SessionProvider>
+        </body>
+      </html>
+    </TanstackProvider>
   );
 }

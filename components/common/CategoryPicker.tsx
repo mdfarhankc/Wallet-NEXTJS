@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Currency } from "@prisma/client";
+import { Category, TransactionType } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -13,30 +13,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useCurrencies } from "@/hooks/useCurrencies";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/hooks/useCategories";
+import { Skeleton } from "../ui/skeleton";
 
-interface CurrencyPickerProps {
+interface CategoryPickerProps {
   onChange: (value: string) => void;
-  defaultValue: string;
+  type: TransactionType;
 }
 
-export default function CurrencyPicker({
+export default function CategoryPicker({
   onChange,
-  defaultValue,
-}: CurrencyPickerProps) {
+  type,
+}: CategoryPickerProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>(defaultValue);
-  const { currencies } = useCurrencies();
+  const [value, setValue] = useState<string>("");
+  const { categories, isLoading } = useCategories(type);
 
   useEffect(() => {
     if (!value) return;
     onChange(value);
   }, [onChange, value]);
 
-  const selectedcurrency = currencies?.find(
-    (currency: Currency) => currency.id === value
+  const selectedcategory = categories?.find(
+    (category: Category) => category.id === value
   );
 
   return (
@@ -48,10 +49,10 @@ export default function CurrencyPicker({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedcurrency ? (
-            <CurrencyRow currency={selectedcurrency} />
+          {selectedcategory ? (
+            <CategoryRow category={selectedcategory} />
           ) : (
-            "Select Currency"
+            "Select Category"
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -62,27 +63,38 @@ export default function CurrencyPicker({
             e.preventDefault();
           }}
         >
-          <CommandInput placeholder="Search currency..." />
+          <CommandInput placeholder="Search category..." />
           <CommandGroup>
             <CommandList>
-              {currencies &&
-                currencies.map((currency: Currency) => (
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="p-2">
+                    <Skeleton className="h-4 w-full" />
+                  </div>
+                ))
+              ) : categories?.length ? (
+                categories.map((category: Category) => (
                   <CommandItem
-                    key={currency.id}
+                    key={category.id}
                     onSelect={() => {
-                      setValue(currency.id);
-                      setOpen((prev) => !prev);
+                      setValue(category.id);
+                      setOpen(false);
                     }}
                   >
-                    <CurrencyRow currency={currency} />
+                    <CategoryRow category={category} />
                     <Check
                       className={cn(
-                        "mr-2 w-4 h-4 opacity-0",
-                        value === currency.name && "opacity-100"
+                        "ml-auto h-4 w-4 opacity-0",
+                        value === category.id && "opacity-100"
                       )}
                     />
                   </CommandItem>
-                ))}
+                ))
+              ) : (
+                <div className="p-4 text-sm text-muted-foreground">
+                  No categories found.
+                </div>
+              )}
             </CommandList>
           </CommandGroup>
         </Command>
@@ -91,10 +103,10 @@ export default function CurrencyPicker({
   );
 }
 
-function CurrencyRow({ currency }: { currency: Currency }) {
+function CategoryRow({ category }: { category: Category }) {
   return (
     <div className="flex items-center">
-      <span>{currency.name}</span>
+      <span>{category.name}</span>
     </div>
   );
 }

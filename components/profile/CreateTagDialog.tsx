@@ -24,8 +24,10 @@ import { useForm } from "react-hook-form";
 import LoadingButton from "@/components/common/loading-button";
 import { createTagAction } from "@/app/(main)/profile/actions";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreateTagDialog() {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const form = useForm<CreateTagValues>({
     resolver: zodResolver(createTagSchema),
@@ -40,6 +42,7 @@ export default function CreateTagDialog() {
       form.reset({
         name: "",
       });
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag created successfully.");
       setOpen((prev) => !prev);
     } catch (error) {

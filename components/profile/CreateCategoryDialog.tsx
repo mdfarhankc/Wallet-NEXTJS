@@ -41,8 +41,10 @@ import LoadingButton from "@/components/common/loading-button";
 import { createCategoryAction } from "@/app/(main)/profile/actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreateCategoryDialog() {
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const form = useForm<CreateCategoryValues>({
@@ -62,6 +64,7 @@ export default function CreateCategoryDialog() {
         icon: "",
         type: form.watch("type"),
       });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       toast.success("Category created successfully.");
       setOpen((prev) => !prev);
     } catch (error) {

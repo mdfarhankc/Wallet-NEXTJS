@@ -7,13 +7,13 @@ export async function GET() {
         const session = await auth();
         if (!session?.user) return new NextResponse("User not authenticated!", { status: 401 });
 
-        const accounts = await prisma.account.findMany({
+        const tags = await prisma.tag.findMany({
             where: { userId: session?.user?.id },
             orderBy: { name: "asc" },
         });
-        return NextResponse.json(accounts);
+        return NextResponse.json(tags);
     } catch (error) {
-        console.error("Error fetching accounts:", error);
-        return new NextResponse("Failed to fetch accounts", { status: 500 });
+        console.error("Error fetching tags:", error);
+        return new NextResponse("Failed to fetch tags", { status: 500 });
     }
 }

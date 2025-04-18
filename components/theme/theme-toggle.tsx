@@ -9,7 +9,7 @@ const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   return (
     <Button
-      className="cursor-pointer rounded-full"
+      variant={"toggle"}
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
