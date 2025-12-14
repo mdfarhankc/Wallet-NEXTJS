@@ -12,6 +12,7 @@ import {
 import { useTransactions } from "@/hooks/useTransactions";
 import { useTransactionsHistoryStore } from "@/stores/transactions-history";
 import { Skeleton } from "../ui/skeleton";
+import { cn } from "@/lib/utils";
 
 export default function TransactionsTable() {
   const { dateRange } = useTransactionsHistoryStore();
@@ -55,12 +56,19 @@ export default function TransactionsTable() {
           </TableRow>
         ) : (
           transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
+            <TableRow
+              key={transaction.id}
+              className={cn(
+                transaction.type === "income"
+                  ? "text-green-500"
+                  : "text-red-500"
+              )}
+            >
               <TableCell>
                 {new Date(transaction.date).toLocaleDateString()}
               </TableCell>
               <TableCell>{transaction.description}</TableCell>
-              <TableCell>{transaction.type}</TableCell>
+              <TableCell>{transaction.type.toUpperCase()}</TableCell>
               <TableCell className="text-right">{transaction.amount}</TableCell>
             </TableRow>
           ))
@@ -71,7 +79,13 @@ export default function TransactionsTable() {
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell className="text-right font-medium">
-              {transactions.reduce((acc, tx) => acc + tx.amount, 0).toFixed(2)}
+              {transactions
+                .reduce(
+                  (acc, tx) =>
+                    acc + (tx.type === "income" ? tx.amount : -tx.amount),
+                  0
+                )
+                .toFixed(2)}
             </TableCell>
           </TableRow>
         </TableFooter>
